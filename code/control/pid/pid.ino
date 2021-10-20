@@ -5,6 +5,8 @@
 double IRreading0;
 double IRreading1;
 double IRreading2;
+double m0speed;
+double m1speed;
 
 double m0_multiplier = 2.1; //based of calibration should be 2.11
 double m1_multiplier = 4;   //based of calibration should be 5.57
@@ -51,27 +53,38 @@ void loop() {
     IRreading0 = analogRead(A0);
     IRreading1 = analogRead(A1);
     IRreading2 = analogRead(A2);
-    Serial.println("A0: "+ String(IRreading0) +"  A1: " + String(IRreading1));
-
+    Serial.print(IRreading0);
+    Serial.print(IRreading1);
+    Serial.print(IRreading2);
   
     if (IRreading0 > a0_threshold) {
       // turn left
-      motor0->setSpeed(highspeed); // Adjust relative speeds later, we weren't able to test this yet!!!!!!!!!!!
-      motor1->setSpeed(lowspeed*speedratio);
+      m0speed = highspeed;
+      motor0->setSpeed(highspeed);
+      m1speed = lowspeed*speedratio;
+      motor1->setSpeed(m1speed);
     } else if (IRreading1 > a1_threshold) {
       // turn right
-      motor0->setSpeed(lowspeed);
-      motor1->setSpeed(highspeed*speedratio);
+      m0speed = lowspeed;
+      motor0->setSpeed(m0speed);
+      m1speed = highspeed*speedratio;
+      motor1->setSpeed(m1speed);
     } else if (IRreading2 < a1_threshold) {
       // all sensors are off the tape =>
       // rotate in place until a sensor finds the tape
-      motor0->setSpeed(0);
-      motor1->setSpeed(basespeed*speedratio);
+      m0speed = 0;
+      motor0->setSpeed(m0speed);
+      m1speed = basespeed*speedratio;
+      motor1->setSpeed(m1speed);
     } else {
       // don't turn
-      motor0->setSpeed(basespeed);
-      motor1->setSpeed(basespeed*speedratio);
+      m0speed = basespeed;
+      motor0->setSpeed(m0speed);
+      m1speed = basespeed*speedratio;
+      motor1->setSpeed(m1speed);
     }
+    Serial.print(m0speed);
+    Serial.print(m1speed);
     
     // Argument to run could be FORWARD, BACKWARD, or RELEASE
     motor0->run(FORWARD);
