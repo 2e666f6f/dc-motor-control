@@ -14,8 +14,8 @@ void setup() {
 
     // Set default speed: 0 is stopped, 255 is full speed
     // These are the speeds required for the child to go in a straight line
-    motor0->setSpeed(20);
-    motor1->setSpeed(40);
+    //motor0->setSpeed(10);
+    motor1->setSpeed(90);
 }
 
 void loop() {
@@ -23,7 +23,10 @@ void loop() {
     // based on IR sensor readings
 
     // Argument to run could be FORWARD, BACKWARD, or RELEASE
-    motor0->run(FORWARD);
     motor1->run(BACKWARD);
+    //motor1->run(BACKWARD);
+    delay(5000);
+    motor1->run(RELEASE);
+    delay(5000);
 
 }
